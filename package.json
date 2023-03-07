@@ -1,0 +1,22 @@
+{
+  "name": "data-structure",
+  "version": "1.0.0",
+  "description": "js版数据结构",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baoxfei/data-structure-js.git"
+  },
+  "keywords": [
+    "dataStructure"
+  ],
+  "author": "baoxfei",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/baoxfei/data-structure-js/issues"
+  },
+  "homepage": "https://github.com/baoxfei/data-structure-js#readme"
+}
