@@ -1,1 +1,1 @@
-export { default as compare } from './compare'
+export { default as compare, Compare } from './compare'
