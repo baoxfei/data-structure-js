@@ -4,7 +4,8 @@
   "description": "js版数据结构",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config ./script/webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,17 @@
   "bugs": {
     "url": "https://github.com/baoxfei/data-structure-js/issues"
   },
-  "homepage": "https://github.com/baoxfei/data-structure-js#readme"
+  "homepage": "https://github.com/baoxfei/data-structure-js#readme",
+  "dependencies": {
+    "@babel/core": "^7.21.0",
+    "source-map-loader": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.14.6",
+    "babel-loader": "^9.1.2",
+    "ts-loader": "^8.4.0",
+    "typescript": "^4.9.5",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  }
 }
