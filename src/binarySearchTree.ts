@@ -34,7 +34,7 @@ class BinarySearchTree<K> {
     }
   }
 
-  private insertNode(newKey: K, node: BinaryNode<K>) {
+  protected insertNode(newKey: K, node: BinaryNode<K>) {
     const { left, right, key } = node;
     if (newKey <= key) {
       if (left == null) {
@@ -112,7 +112,7 @@ class BinarySearchTree<K> {
   remove(key: K) {
     this.root = this.removeNode(key, this.root)
   }
-  removeNode(key: K, node) {
+  protected  removeNode(key: K, node) {
     if (node == null) return null;
     if (this.compare(node.key, key) === Compare.LESS_THAN) {
       node.right = this.removeNode(node.left, key)
@@ -298,3 +298,168 @@ class BinarySearchTree<K> {
 //     }
 //   }
 // }
+
+enum BalanceFactor {
+  UNBALANCED_RIGHT = 1,
+  SLIGHTLY_UNBALANCED_RIGHT = 2,
+  BALANCED = 3,
+  SLIGHTLY_UNBALANCED_LEFT = 4,
+  UNBALANCED_LEFT = 5
+}
+
+class AVLTree<T> extends BinarySearchTree<T> {
+
+  constructor(protected compare) {
+    super(compare)
+  }
+
+  getTreeNodeHeight(node: BinaryNode<T>) {
+    if (node.key == null) return -1;
+    // if (node.left || node.right) return 1;
+    return Math.max(this.getTreeNodeHeight(node.left), this.getTreeNodeHeight(node.right)) + 1
+  }
+  /**
+   * Left left case: rotate right
+   *
+   *       b                           a
+   *      / \                         / \
+   *     a   e -> rotationLL(b) ->   c   b
+   *    / \                             / \
+   *   c   d                           d   e
+   *
+   * @param node Node<T>
+   */
+  private rotationLL(node) {
+    const temp = node.left;
+    node.left = temp.right;
+    temp.right = node;
+    return temp;
+  }
+  /**
+   * Right right case: rotate left
+   *
+   *     a                              b
+   *    / \                            / \
+   *   c   b   -> rotationRR(a) ->    a   e
+   *      / \                        / \
+   *     d   e                      c   d
+   *
+   * @param node Node<T>
+   */
+  private rotationRR(node) {
+    const temp = node.right;
+    node.right = temp.left;
+    temp.left = node;
+    return temp;
+  }
+  /**
+   * Left right case: rotate left then right
+   * @param node Node<T>
+   */
+  private rotationRL(node) {
+    node.left = this.rotationRR(node.right)
+    return this.rotationLL(node)
+  }
+  /**
+   * Right left case: rotate left then right
+   * @param node Node<T>
+   */
+  private rotationLR(node) {
+    node.right = this.rotationLL(node.left)
+    return this.rotationRR(node)
+  }
+
+  private getBalanceFactor(node) {
+    const hasDiffence = this.getTreeNodeHeight(node.left) - this.getTreeNodeHeight(node.right)
+    switch (hasDiffence) {
+      case -2:
+        return BalanceFactor.UNBALANCED_RIGHT;
+      case -1:
+        return BalanceFactor.SLIGHTLY_UNBALANCED_RIGHT;
+      case 0:
+        return BalanceFactor.BALANCED;
+      case 1:
+        return BalanceFactor.SLIGHTLY_UNBALANCED_LEFT;
+      case 2:
+        return BalanceFactor.UNBALANCED_LEFT;
+    }
+  }
+
+  insert(key) {
+    if (this.root == null) {
+      this.root = new BinaryNode(key)
+    } else {
+      this.root = this.insertNode(key, this.root)
+    }
+  }
+
+  // todo 重载后 参数顺序不一样会报错
+  protected insertNode(key: T, node: BinaryNode<T>) {
+    if (node == null) {
+      return new BinaryNode(key)
+    }
+    if(this.compare(key, node.key) === Compare.LESS_THAN) {
+      node.left = this.insertNode(key, node.left)!
+    } else if (this.compare(key, node.key) === Compare.BIGGER_THAN) {
+      node.right = this.insertNode(key, node.right)!
+    } else {
+      return node
+    }
+  
+    const balanceFactor = this.getBalanceFactor(node)
+    if (balanceFactor === BalanceFactor.UNBALANCED_LEFT) {
+      if (this.compare(key, node.left.key) === Compare.LESS_THAN) {
+        node.left = this.rotationLL(node)
+      } else {
+        return this.rotationLR(node)
+      }
+    }
+  
+    if (balanceFactor === BalanceFactor.UNBALANCED_RIGHT) {
+      if (this.compare(key, node.right.key) === Compare.LESS_THAN) {
+        return this.rotationRL(node)
+      } else {
+        node = this.rotationRR(node)
+      }
+    }
+  }
+
+  remove(key: T) {
+    this.root = this.removeNode(key, this.root)
+  }
+
+  protected removeNode(key, node: BinaryNode<T>) {
+    if (node == null) return null;
+    if (this.compare(node.key, key) === Compare.LESS_THAN) {
+      node.left = this.removeNode(key, node.left);
+    } if (this.compare(node.key, key) === Compare.BIGGER_THAN) {
+      node.right = this.removeNode(key, node.right)
+    }
+    if (node.left == null && node.right == null) {
+      node = null
+      return node;
+    }
+    if (node.left == null && node.right) {
+      node = node.right
+      return node
+    } else if (node.left && node.right == null) {
+      node = node.left
+      return node;
+    }
+    if (node.left && node.right) {
+      const temp = this.minNode(node.right)
+      node.key = temp.key
+      node.right = this.removeNode(node.right, temp.key)
+      return node
+    }
+  }
+}
+
+class RedBlackTree<T> extends BinarySearchTree<T> {
+  constructor(compare) {
+    super(compare)
+  }
+}
+
+
+export { AVLTree, RedBlackTree }
