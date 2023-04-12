@@ -1,5 +1,5 @@
 {
-  "name": "data-structure",
+  "name": "data-composition-js",
   "version": "0.0.1",
   "description": "js版数据结构",
   "main": "index.js",
@@ -12,7 +12,9 @@
     "url": "git+https://github.com/baoxfei/data-structure-js.git"
   },
   "keywords": [
-    "dataStructure"
+    "dataStructure",
+    "typescript",
+    "javascript"
   ],
   "author": "baoxfei",
   "license": "MIT",
