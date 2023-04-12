@@ -425,15 +425,15 @@ class AVLTree<T> extends BinarySearchTree<T> {
   }
 
   remove(key: T) {
-    this.root = this.removeNode(key, this.root)
+    this.root = this.removeNode(key, this.root)!
   }
 
-  protected removeNode(key, node: BinaryNode<T>) {
+  protected removeNode(key, node: BinaryNode<T> | null) {
     if (node == null) return null;
     if (this.compare(node.key, key) === Compare.LESS_THAN) {
-      node.left = this.removeNode(key, node.left);
+      node.left = this.removeNode(key, node.left)!;
     } if (this.compare(node.key, key) === Compare.BIGGER_THAN) {
-      node.right = this.removeNode(key, node.right)
+      node.right = this.removeNode(key, node.right)!
     }
     if (node.left == null && node.right == null) {
       node = null
@@ -449,7 +449,7 @@ class AVLTree<T> extends BinarySearchTree<T> {
     if (node.left && node.right) {
       const temp = this.minNode(node.right)
       node.key = temp.key
-      node.right = this.removeNode(node.right, temp.key)
+      node.right = this.removeNode(node.right, temp.key)!
       return node
     }
   }
