@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"name": "leet",
+			"path": "../../../../dataStructure/leet"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "learn"
+	}
+}
